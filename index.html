@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أم الدنيا - أخبار مصر</title>
+    <style>
+        :root {
+            --color-primary: #c41e3a;
+            --color-secondary: #fdd835;
+            --color-dark: #1a1a1a;
+            --color-light: #f5f5f5;
+            --color-text: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--color-light);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #8b0000 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            padding: 0;
+            border-bottom: 3px solid var(--color-primary);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(196, 30, 58, 0.05);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .nav-btn.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+            background-color: rgba(196, 30, 58, 0.08);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Category Section */
+        .category-section {
+            display: none;
+        }
+
+        .category-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* News Card */
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-right: 4px solid var(--color-primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-card.highlighted {
+            border-right-color: var(--color-secondary);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .news-header {
+            background-color: var(--color-light);
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--color-primary);
+            font-size: 0.9em;
+        }
+
+        .news-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-title {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: var(--color-dark);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .news-description {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: #999;
+            border-top: 1px solid var(--color-light);
+            padding-top: 12px;
+        }
+
+        .news-source {
+            background-color: rgba(196, 30, 58, 0.1);
+            color: var(--color-primary);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.8em;
+            margin: 30px 0 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--color-primary);
+            color: var(--color-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-dark);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .navbar {
+                gap: 5px;
+            }
+
+            .nav-btn {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📰 أم الدنيا</h1>
+        <p>أخبار مصر - كل ما تحتاج معرفته</p>
+    </header>
+
+    <nav class="navbar">
+        <button class="nav-btn active" onclick="showCategory('politics')">⚖️ سياسة</button>
+        <button class="nav-btn" onclick="showCategory('economy')">📊 اقتصاد</button>
+        <button class="nav-btn" onclick="showCategory('sports')">⚽ رياضة</button>
+        <button class="nav-btn" onclick="showCategory('technology')">💻 تكنولوجيا</button>
+        <button class="nav-btn" onclick="showCategory('general')">🌍 عام</button>
+    </nav>
+
+    <div class="container">
+        <!-- Politics Section -->
+        <div id="politics" class="category-section active">
+            <h2 class="section-title">⚖️ الأخبار السياسية</h2>
+            <div class="news-grid" id="politics-grid"></div>
+        </div>
+
+        <!-- Economy Section -->
+        <div id="economy" class="category-section">
+            <h2 class="section-title">📊 الأخبار الاقتصادية</h2>
+            <div class="news-grid" id="economy-grid"></div>
+        </div>
+
+        <!-- Sports Section -->
+        <div id="sports" class="category-section">
+            <h2 class="section-title">⚽ الأخبار الرياضية</h2>
+            <div class="news-grid" id="sports-grid"></div>
+        </div>
+
+        <!-- Technology Section -->
+        <div id="technology" class="category-section">
+            <h2 class="section-title">💻 أخبار التكنولوجيا</h2>
+            <div class="news-grid" id="technology-grid"></div>
+        </div>
+
+        <!-- General Section -->
+        <div id="general" class="category-section">
+            <h2 class="section-title">🌍 أخبار عامة</h2>
+            <div class="news-grid" id="general-grid"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 أم الدنيا للأخبار | جميع الحقوق محفوظة | الأخبار الموثوقة من المصادر المصرية</p>
+    </footer>
+
+    <script>
+        const newsData = {
+            politics: [
+                {
+                    title: "انطلاق الاقتراع في الدوائر الملغاة من انتخابات مجلس النواب",
+                    description: "بدء الاقتراع اليوم في 30 دائرة ملغاة من المرحلة الأولى لانتخابات مجلس النواب، حيث قررت المحكمة الإدارية العليا إعادة التصويت بعد الطعون.",
+                    source: "القاهرة الإخبارية",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "بدء مراقبة الانتخابات من قبل المنظمات الحقوقية",
+                    description: "أعلنت منظمات المراقبة الحقوقية عن متابعة شاملة للعملية الانتخابية وضمان سلامتها وشفافيتها في جميع الدوائر الملغاة.",
+                    source: "اليوم السابع",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "الحكومة تكثف جهودها لمكافحة الفساد الانتخابي",
+                    description: "تم ضبط عدة حالات توزيع أموال وتوجيه ناخبين في محافظات مختلفة وإحالتها للنيابة العامة.",
+                    source: "بوابة الأهرام",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "مصر تجدد موقفها من الأزمات الإقليمية",
+                    description: "أكد وزير الخارجية المصري رفض مصر القاطع لأي اعتداءات تستهدف الأراضي السورية والتزام مصر برعاية السلام.",
+                    source: "سكاي نيوز عربية",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop"
+                }
+            ],
+            economy: [
+                {
+                    title: "التضخم السنوي ينخفض إلى 12.3% في نوفمبر",
+                    description: "شهد معدل التضخم السنوي في المدن المصرية انخفاضاً ملحوظاً ليصل إلى 12.3% في نوفمبر، مما يشير إلى تحسن الأوضاع الاقتصادية.",
+                    source: "سكاي نيوز الاقتصادي",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "اقتصاد مصر يبقى من أكبر الاقتصاديات في المنطقة",
+                    description: "أكد رئيس الوزراء أن الاقتصاد المصري مازال من أكبر الاقتصاديات العربية، وأن الحكومة تعمل على تحسين معدلات النمو.",
+                    source: "الاقتصاد المصري",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "انخفاض أسعار الذهب في الأسواق المصرية",
+                    description: "شهدت أسعار الذهب تراجعاً خلال تعاملات اليوم وسط ترقب قرارات البنك الفيدرالي الأمريكي.",
+                    source: "بوابة الأهرام",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "استثمارات حكومية في البنية التحتية والطاقة المتجددة",
+                    description: "أعلنت الحكومة عن خطط استثمارية ضخمة في مجال الطاقة المتجددة والبنية التحتية لدعم النمو الاقتصادي.",
+                    source: "الاقتصاد المصري",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=400&fit=crop"
+                }
+            ],
+            sports: [
+                {
+                    title: "الأهلي يفوز على الزمالك بخماسية في دوري السيدات",
+                    description: "حقق نادي الأهلي فوزاً كبيراً على نادي الزمالك بخمسة أهداف نظيفة في بطولة الدوري المصري للسيدات.",
+                    source: "مصراوي",
+                    date: "7 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "نادين غازي تكتب التاريخ في القمة",
+                    description: "سجلت لاعبة الأهلي نادين غازي هدفاً في مباراة القمة لتكون أول لاعبة مصرية تسجل في مثل هذه المباراة الكبيرة.",
+                    source: "مصراوي",
+                    date: "7 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "الزمالك يطالب بتأجيل مباراتين قبل كأس مصر",
+                    description: "قدم نادي الزمالك طلباً لاتحاد الكرة بتأجيل مباراتي الدوري قبل خوض مواجهة كأس مصر.",
+                    source: "صدى البلد",
+                    date: "9 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "منتخب الناشئين يفوز وديا بأربعة أهداف نظيفة",
+                    description: "حقق منتخب مصر للناشئين مواليد 2009 فوزاً وديا على الجونة بنتيجة 4-0 في معسكر تدريبي.",
+                    source: "صدى البلد",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=600&h=400&fit=crop"
+                }
+            ],
+            technology: [
+                {
+                    title: "مصر تطلق رسمياً خدمات الجيل الخامس 5G",
+                    description: "أطلقت مصر رسمياً خدمات الجيل الخامس للهاتف المحمول من سفح الأهرامات، مما يعكس التقدم التكنولوجي للدولة.",
+                    source: "القاهرة الإخبارية",
+                    date: "3 يونيو 2025",
+                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "دل تكنولوجيز تكشف عن حلول متقدمة في معرض القاهرة",
+                    description: "عرضت شركة دل تكنولوجيز أحدث حلولها المتقدمة في معرض القاهرة الدولي للتكنولوجيا Cairo ICT 2025.",
+                    source: "ICT News",
+                    date: "2025",
+                    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "تطورات هاتف آيفون 17 الجديد",
+                    description: "كشفت تسريبات جديدة عن مواعيد ومواصفات آيفون 17 الأنحف في التاريخ بتقنيات ذكاء اصطناعي متقدمة.",
+                    source: "المصري اليوم",
+                    date: "2025",
+                    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "اتصالات مصر تكتمل مشروع الكابل البحري 2Africa",
+                    description: "أعلنت المصرية للاتصالات عن اكتمال مشروع الكابل البحري 2Africa الذي يربط قارة أفريقيا.",
+                    source: "ICT News",
+                    date: "2025",
+                    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop"
+                }
+            ],
+            general: [
+                {
+                    title: "مصر تشارك في جهود إعادة إعمار غزة",
+                    description: "أكد الرئيس السيسي على ضرورة الإسراع في عملية إعادة إعمار قطاع غزة والتزام مصر بالقضية الفلسطينية.",
+                    source: "القاهرة الإخبارية",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "تعاون استراتيجي بين مصر وقطر",
+                    description: "ناقش وزير الخارجية المصري سبل دفع الشراكة مع قطر وتنسيق المواقف بشأن المستجدات الإقليمية.",
+                    source: "الشرق الأوسط",
+                    date: "8 ديسمبر 2025",
+                    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "مبادرة حياة كريمة تواصل تحسين معيشة المصريين",
+                    description: "تواصل مبادرة حياة الكريمة جهودها في تحسين معايير الحياة والخدمات الصحية والتعليمية في القرى المصرية.",
+                    source: "صدى البلد",
+                    date: "2025",
+                    image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=400&fit=crop"
+                },
+                {
+                    title: "خفض معدلات الإنجاب يحقق نتائج إيجابية",
+                    description: "أعادت الحكومة التأكيد على استمرار تراجع أعداد المواليد بعد جهود توعية مكثفة، مما ينعكس إيجاباً على الاقتصاد.",
+                    source: "الشرق الأوسط",
+                    date: "2025",
+                    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop"
+                }
+            ]
+        };
+
+        function showCategory(category) {
+            const sections = document.querySelectorAll('.category-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            document.getElementById(category).classList.add('active');
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderNews() {
+            const categories = ['politics', 'economy', 'sports', 'technology', 'general'];
+            
+            categories.forEach(category => {
+                const gridId = `${category}-grid`;
+                const grid = document.getElementById(gridId);
+                const news = newsData[category];
+
+                grid.innerHTML = news.map((item, index) => `
+                    <div class="news-card ${index === 0 ? 'highlighted' : ''}">
+                        <img 
+                            src="${item.image}" 
+                            alt="${item.title}"
+                            class="news-image"
+                            loading="lazy"
+                        >
+                        <div class="news-header">${item.source}</div>
+                        <div class="news-content">
+                            <h3 class="news-title">${item.title}</h3>
+                            <p class="news-description">${item.description}</p>
+                            <div class="news-footer">
+                                <span class="news-source">${item.source}</span>
+                                <span>${item.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderNews);
+    </script>
+</body>
+</html>
